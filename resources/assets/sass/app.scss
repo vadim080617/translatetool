@@ -1,0 +1,43 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.loadFieldTitle {
+  font-size: 28px;
+  font-weight: bold;
+  color: black;
+
+}
+
+.div-with-buttons{
+  button {
+    margin: 5px;
+  }
+  padding: 5px;
+}
+
+.input-translate-block{
+  padding: 7px;
+  display: inline-block;
+  height:150px;
+  border: 1px solid #d6d6d6;
+  border-radius: 16px;
+}
+
+.main-field{
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  padding: 5px;
+  margin: 5px;
+}
