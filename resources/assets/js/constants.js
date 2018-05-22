@@ -1,1 +1,1 @@
-export const API_URL = 'http://translation.tools.dias.team';
+export const API_URL = 'http://myapp.test';

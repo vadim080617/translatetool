@@ -10395,9 +10395,10 @@ a.text-dark:focus {
 }
 
 .loadFieldTitle {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 22px;
   color: black;
+  border-bottom: 1px solid #d6d6d6;
+  margin: 10px;
 }
 
 .div-with-buttons {
@@ -10408,18 +10409,18 @@ a.text-dark:focus {
   margin: 5px;
 }
 
-.input-translate-block {
-  padding: 7px;
-  display: inline-block;
-  height: 150px;
-  border: 1px solid #d6d6d6;
-  border-radius: 16px;
+.main-field {
+  padding: 5px;
+  margin: 10px;
 }
 
-.main-field {
-  border: 1px solid #d6d6d6;
-  border-radius: 12px;
-  padding: 5px;
-  margin: 5px;
+.input-translate-block {
+  height: 150px;
+}
+
+.tt-head {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
 }
 

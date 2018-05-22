@@ -25,7 +25,7 @@
                             <template v-for="(value,index) in fileInputs">
                                 <div class="row col-md-4 input-translate-block m-0">
                                     <input type="file" @change="getTextFromFile($event,index)">
-                                    <label>Enter language:<input class="form-control" type="text" @change="setLang($event,index)" :disabled="value === -1"></label>
+                                    <label>Enter language:<input class="form-control" type="text" value="" @change="setLang($event,index)" :disabled="!value"></label>
                                 </div>
                             </template>
                             <div class="div-with-buttons">
@@ -60,7 +60,7 @@
             console.log('Component mounted.')
         },
         created() {
-            this.fileInputs[0] = -1;
+            this.fileInputs[0] = false;
             this.typeOfOutput = "js";
             this.mainTranslateObj["files"] = {};
         },
@@ -169,7 +169,7 @@
                 this.mainTranslateObj["files"][index] = {};
                 this.mainTranslateObj["files"][index]["filename"] = filename;
                 this.mainTranslateObj["files"][index]["lang"] = obj;
-                this.$set(this.fileInputs, index, 0);
+                this.$set(this.fileInputs, index, true);
             },
             transformToRows(text,ext){                      //transform text from file into rows
                 if(ext === "php"){
@@ -273,12 +273,12 @@
                 }
             },
             addField(){
-               this.fileInputs.push(-1);
+               this.fileInputs.push(false);
             },
             sendTranslates(){
                 console.log(this.fileInputs);
                 for(let i = 0; i < this.fileInputs.length ; i++){
-                    if(this.fileInputs[i] === -1){
+                    if(!this.fileInputs[i]){
                         swal({
                             type: 'error',
                             title: 'Oops...',
@@ -287,22 +287,10 @@
                         return;
                     }
                 }
-                for(let i = 0; i < this.fileInputs.length ; i++){
-                    if(this.fileInputs[i] === 0){
-                        swal({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: 'Не все поля ввода языка заполнены.',
-                        });
-                        return;
-                    }
-                }
-
                 api.sendTranslate(this.mainTranslateObj);
             },
             setLang(e,index){
                 this.mainTranslateObj["files"][index]["language"] = e.target.value;
-                this.fileInputs[index] = 1;
             },
             removeField(){
                 this.mainTranslateObj["files"][this.fileInputs.length -1 ] = null;

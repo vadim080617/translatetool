@@ -112,9 +112,8 @@ class excelController extends Controller
                             }
                         }
                         $tempString = $tempString . '];';
-                        Storage::disk('local')->put($key2 . '.php', $tempString);
-                        $zipper->make(storage_path('app/translates.zip'))->folder($key1)->add(storage_path('app/' . $key2 . '.php'));
-                        Storage::delete(storage_path('app/' . $key1 . '_' . $key2 . '.php'));
+                        Storage::disk('local')->put($key1 . '.php', $tempString);
+                        $zipper->make(storage_path('app/translates.zip'))->folder($key2)->add(storage_path('app/' . $key1 . '.php'));
                 }
             }
         }else{
@@ -125,8 +124,8 @@ class excelController extends Controller
                         $tempString = $tempString . '        ' . $key3 . ': \'' . $val3 . '\',' . PHP_EOL;
                     }
                     $tempString = $tempString . '    },' . PHP_EOL . '};';
-                    Storage::disk('local')->put( $key2.'.js', $tempString);
-                    $zipper->make(storage_path('app/translates.zip'))->folder($key1)->add(storage_path('app/' . $key2.'.js'));
+                    Storage::disk('local')->put( $key1.'.js', $tempString);
+                    $zipper->make(storage_path('app/translates.zip'))->folder($key2)->add(storage_path('app/' . $key1.'.js'));
                 }
             }
         }
