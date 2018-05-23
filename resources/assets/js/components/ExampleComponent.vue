@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card card-default">
-                    <div class="card-header">Translate tool</div>
+                    <div class="card-header main-app-header">Translate tool</div>
 
                     <div class="card-body row">
                             <div class="col-6">
@@ -28,7 +28,9 @@
                                         <input type="file" class="custom-file-input" id="transf" @change="getTextFromFile($event,index)">
                                         <label class="custom-file-label" for="transf">Choose file</label>
                                     </div>
-                                    <label>Enter language:<input class="form-control" type="text" @change="setLang($event,index)" :disabled="value === -1"></label>
+                                    <label class = "col-12 p-0">Enter language:
+                                    <input class="form-control col-12" type="text" @change="setLang($event,index)" :disabled="value === -1">
+                                    </label>
                                 </div>
                             </template>
                             <div class="div-with-buttons">

@@ -28426,6 +28426,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
 
 
 
@@ -63330,7 +63332,9 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card card-default" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Translate tool")]),
+          _c("div", { staticClass: "card-header main-app-header" }, [
+            _vm._v("Translate tool")
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body row" }, [
             _c("div", { staticClass: "col-6" }, [
@@ -63455,10 +63459,12 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("label", [
-                          _vm._v("Enter language:"),
+                        _c("label", { staticClass: "col-12 p-0" }, [
+                          _vm._v(
+                            "Enter language:\n                                "
+                          ),
                           _c("input", {
-                            staticClass: "form-control",
+                            staticClass: "form-control col-12",
                             attrs: { type: "text", disabled: value === -1 },
                             on: {
                               change: function($event) {

@@ -14,7 +14,7 @@
 }
 
 .loadFieldTitle {
-  font-size: 28px;
+  font-size: 22px;
   color: black;
   border-bottom: 1px solid #d6d6d6;
   margin: 5px;
@@ -31,4 +31,10 @@
   padding: 7px;
   display: inline-block;
   height:150px;
+}
+
+.main-app-header {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
 }
