@@ -28424,6 +28424,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
 
 
 
@@ -28442,7 +28444,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         console.log('Component mounted.');
     },
     created: function created() {
-        this.fileInputs[0] = false;
+        this.fileInputs[0] = -1;
         this.typeOfOutput = "js";
         this.mainTranslateObj["files"] = {};
     },
@@ -28471,6 +28473,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 return _context.abrupt('return');
 
                             case 4:
+
+                                e.target.nextElementSibling.textContent = e.target.files[0].name;
+
                                 files = e.target.files, f = files[0];
                                 reader = new FileReader();
 
@@ -28481,7 +28486,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                     _this.handleExel(wb);
                                 });
 
-                            case 8:
+                            case 9:
                             case 'end':
                                 return _context.stop();
                         }
@@ -28556,6 +28561,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 return;
             }
 
+            e.target.nextElementSibling.textContent = e.target.files[0].name;
+
             var text = void 0,
                 fileReader = new FileReader(),
                 parts = e.target.files[0].name.split('.'),
@@ -28594,7 +28601,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 this.mainTranslateObj["files"][index] = {};
                                 this.mainTranslateObj["files"][index]["filename"] = filename;
                                 this.mainTranslateObj["files"][index]["lang"] = obj;
-                                this.$set(this.fileInputs, index, true);
+                                this.$set(this.fileInputs, index, 0);
 
                             case 12:
                             case 'end':
@@ -28713,12 +28720,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             }
         },
         addField: function addField() {
-            this.fileInputs.push(false);
+            this.fileInputs.push(-1);
         },
         sendTranslates: function sendTranslates() {
             console.log(this.fileInputs);
             for (var i = 0; i < this.fileInputs.length; i++) {
-                if (!this.fileInputs[i]) {
+                if (this.fileInputs[i] === -1) {
                     __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default()({
                         type: 'error',
                         title: 'Oops...',
@@ -28727,10 +28734,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     return;
                 }
             }
+
+            for (var _i3 = 0; _i3 < this.fileInputs.length; _i3++) {
+                if (this.fileInputs[_i3] === 0) {
+                    __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default()({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Не все поля ввода языка заполнены.'
+                    });
+                    return;
+                }
+            }
             __WEBPACK_IMPORTED_MODULE_1__api_api_js__["a" /* default */].sendTranslate(this.mainTranslateObj);
         },
         setLang: function setLang(e, index) {
             this.mainTranslateObj["files"][index]["language"] = e.target.value;
+            this.fileInputs[index] = 1;
         },
         removeField: function removeField() {
             this.mainTranslateObj["files"][this.fileInputs.length - 1] = null;
@@ -63313,189 +63332,183 @@ var render = function() {
         _c("div", { staticClass: "card card-default" }, [
           _c("div", { staticClass: "card-header" }, [_vm._v("Translate tool")]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-body" },
-            [
-              true
-                ? [
-                    _c("div", { staticClass: "main-field" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "loadFieldTitle row justify-content-center"
-                        },
-                        [_vm._v("Excel -> js||php")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c("input", {
-                          attrs: { type: "file" },
-                          on: {
-                            change: function($event) {
-                              _vm.getTextFromExcel($event)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("div", [
-                          _c("div", [_vm._v("Type of output")]),
-                          _vm._v(" "),
-                          _c("label", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.typeOfOutput,
-                                  expression: "typeOfOutput"
-                                }
-                              ],
-                              attrs: {
-                                type: "radio",
-                                name: "typeOfOutput",
-                                value: "js"
-                              },
-                              domProps: {
-                                checked: _vm._q(_vm.typeOfOutput, "js")
-                              },
-                              on: {
-                                change: function($event) {
-                                  _vm.typeOfOutput = "js"
-                                }
-                              }
-                            }),
-                            _vm._v(" JS")
-                          ]),
-                          _vm._v(" "),
-                          _c("label", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.typeOfOutput,
-                                  expression: "typeOfOutput"
-                                }
-                              ],
-                              attrs: {
-                                type: "radio",
-                                name: "typeOfOutput",
-                                value: "php"
-                              },
-                              domProps: {
-                                checked: _vm._q(_vm.typeOfOutput, "php")
-                              },
-                              on: {
-                                change: function($event) {
-                                  _vm.typeOfOutput = "php"
-                                }
-                              }
-                            }),
-                            _vm._v(" PHP")
-                          ])
-                        ])
-                      ])
-                    ])
-                  ]
-                : _vm._e(),
+          _c("div", { staticClass: "card-body row" }, [
+            _c("div", { staticClass: "col-6" }, [
+              _c(
+                "div",
+                { staticClass: "loadFieldTitle row justify-content-center" },
+                [_vm._v("Excel -> js||php")]
+              ),
               _vm._v(" "),
-              true
-                ? [
+              _c("div", [
+                _c("div", { staticClass: "custom-file" }, [
+                  _c("input", {
+                    staticClass: "custom-file-input",
+                    attrs: { type: "file", id: "excelf" },
+                    on: {
+                      change: function($event) {
+                        _vm.getTextFromExcel($event)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "custom-file-label",
+                      attrs: { for: "excelf" }
+                    },
+                    [_vm._v("Choose file")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("div", [_vm._v("Type of output")]),
+                  _vm._v(" "),
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.typeOfOutput,
+                          expression: "typeOfOutput"
+                        }
+                      ],
+                      attrs: {
+                        type: "radio",
+                        name: "typeOfOutput",
+                        value: "js"
+                      },
+                      domProps: { checked: _vm._q(_vm.typeOfOutput, "js") },
+                      on: {
+                        change: function($event) {
+                          _vm.typeOfOutput = "js"
+                        }
+                      }
+                    }),
+                    _vm._v(" JS")
+                  ]),
+                  _vm._v(" "),
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.typeOfOutput,
+                          expression: "typeOfOutput"
+                        }
+                      ],
+                      attrs: {
+                        type: "radio",
+                        name: "typeOfOutput",
+                        value: "php"
+                      },
+                      domProps: { checked: _vm._q(_vm.typeOfOutput, "php") },
+                      on: {
+                        change: function($event) {
+                          _vm.typeOfOutput = "php"
+                        }
+                      }
+                    }),
+                    _vm._v(" PHP")
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-6" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "loadFieldTitle row justify-content-center" },
+                  [_vm._v("js||php -> Excel")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.fileInputs, function(value, index) {
+                  return [
                     _c(
                       "div",
-                      { staticClass: "main-field" },
+                      { staticClass: "row col-12 input-translate-block m-0" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "loadFieldTitle row justify-content-center"
-                          },
-                          [_vm._v("js||php -> Excel")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.fileInputs, function(value, index) {
-                          return [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "row col-md-4 input-translate-block m-0"
-                              },
-                              [
-                                _c("input", {
-                                  attrs: { type: "file" },
-                                  on: {
-                                    change: function($event) {
-                                      _vm.getTextFromFile($event, index)
-                                    }
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("label", [
-                                  _vm._v("Enter language:"),
-                                  _c("input", {
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      type: "text",
-                                      value: "",
-                                      disabled: !value
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.setLang($event, index)
-                                      }
-                                    }
-                                  })
-                                ])
-                              ]
-                            )
-                          ]
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "div-with-buttons" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn",
-                              attrs: { type: "button" },
-                              on: { click: _vm.addField }
-                            },
-                            [_vm._v("Add field")]
-                          ),
+                        _c("div", { staticClass: "custom-file" }, [
+                          _c("input", {
+                            staticClass: "custom-file-input",
+                            attrs: { type: "file", id: "transf" },
+                            on: {
+                              change: function($event) {
+                                _vm.getTextFromFile($event, index)
+                              }
+                            }
+                          }),
                           _vm._v(" "),
                           _c(
-                            "button",
+                            "label",
                             {
-                              staticClass: "btn btn-primary",
-                              attrs: { type: "button" },
-                              on: { click: _vm.sendTranslates }
+                              staticClass: "custom-file-label",
+                              attrs: { for: "transf" }
                             },
-                            [_vm._v("Send")]
-                          ),
-                          _vm._v(" "),
-                          _vm.fileInputs.length !== 1
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass: "btn",
-                                  attrs: { type: "button" },
-                                  on: { click: _vm.removeField }
-                                },
-                                [_vm._v("Remove last field")]
-                              )
-                            : _vm._e()
+                            [_vm._v("Choose file")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("label", [
+                          _vm._v("Enter language:"),
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: { type: "text", disabled: value === -1 },
+                            on: {
+                              change: function($event) {
+                                _vm.setLang($event, index)
+                              }
+                            }
+                          })
                         ])
-                      ],
-                      2
+                      ]
                     )
                   ]
-                : _vm._e()
-            ],
-            2
-          )
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "div-with-buttons" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn",
+                      attrs: { type: "button" },
+                      on: { click: _vm.addField }
+                    },
+                    [_vm._v("Add field")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: { click: _vm.sendTranslates }
+                    },
+                    [_vm._v("Send")]
+                  ),
+                  _vm._v(" "),
+                  _vm.fileInputs.length !== 1
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn",
+                          attrs: { type: "button" },
+                          on: { click: _vm.removeField }
+                        },
+                        [_vm._v("Remove last field")]
+                      )
+                    : _vm._e()
+                ])
+              ],
+              2
+            )
+          ])
         ])
       ])
     ])

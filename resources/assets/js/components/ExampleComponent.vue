@@ -5,12 +5,14 @@
                 <div class="card card-default">
                     <div class="card-header">Translate tool</div>
 
-                    <div class="card-body">
-                        <template v-if="true" class="">
-                            <div class="main-field">
+                    <div class="card-body row">
+                            <div class="col-6">
                                 <div class="loadFieldTitle row justify-content-center">Excel -> js||php</div>
                                 <div>
-                                    <input type="file" @change="getTextFromExcel($event)">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="excelf"  @change="getTextFromExcel($event)">
+                                        <label class="custom-file-label" for="excelf">Choose file</label>
+                                    </div>
                                     <div>
                                         <div>Type of output</div>
                                         <label><input type="radio" v-model="typeOfOutput" name="typeOfOutput" value="js"> JS</label>
@@ -18,14 +20,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </template>
-                        <template v-if="true">
-                            <div class="main-field">
+                            <div class="col-6">
                             <div class="loadFieldTitle row justify-content-center">js||php -> Excel</div>
                             <template v-for="(value,index) in fileInputs">
-                                <div class="row col-md-4 input-translate-block m-0">
-                                    <input type="file" @change="getTextFromFile($event,index)">
-                                    <label>Enter language:<input class="form-control" type="text" value="" @change="setLang($event,index)" :disabled="!value"></label>
+                                <div class="row col-12 input-translate-block m-0">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="transf" @change="getTextFromFile($event,index)">
+                                        <label class="custom-file-label" for="transf">Choose file</label>
+                                    </div>
+                                    <label>Enter language:<input class="form-control" type="text" @change="setLang($event,index)" :disabled="value === -1"></label>
                                 </div>
                             </template>
                             <div class="div-with-buttons">
@@ -34,7 +37,6 @@
                                 <button type="button" v-if="fileInputs.length !==1" class="btn" @click="removeField">Remove last field</button>
                             </div>
                             </div>
-                        </template>
                     </div>
                 </div>
             </div>
@@ -60,7 +62,7 @@
             console.log('Component mounted.')
         },
         created() {
-            this.fileInputs[0] = false;
+            this.fileInputs[0] = -1;
             this.typeOfOutput = "js";
             this.mainTranslateObj["files"] = {};
         },
@@ -76,6 +78,9 @@
                     });
                     return;
                 }
+
+                e.target.nextElementSibling.textContent = e.target.files[0].name;
+
                 let files = e.target.files, f = files[0];
                 let reader = new FileReader();
                 reader.readAsBinaryString(e.target.files[0]);
@@ -145,6 +150,8 @@
                     return;
                 }
 
+                e.target.nextElementSibling.textContent = e.target.files[0].name;
+
                 let text,
                     fileReader = new FileReader(),
                     parts = e.target.files[0].name.split('.'),
@@ -169,7 +176,7 @@
                 this.mainTranslateObj["files"][index] = {};
                 this.mainTranslateObj["files"][index]["filename"] = filename;
                 this.mainTranslateObj["files"][index]["lang"] = obj;
-                this.$set(this.fileInputs, index, true);
+                this.$set(this.fileInputs, index, 0);
             },
             transformToRows(text,ext){                      //transform text from file into rows
                 if(ext === "php"){
@@ -273,12 +280,12 @@
                 }
             },
             addField(){
-               this.fileInputs.push(false);
+                this.fileInputs.push(-1);
             },
             sendTranslates(){
                 console.log(this.fileInputs);
                 for(let i = 0; i < this.fileInputs.length ; i++){
-                    if(!this.fileInputs[i]){
+                    if(this.fileInputs[i] === -1){
                         swal({
                             type: 'error',
                             title: 'Oops...',
@@ -287,10 +294,22 @@
                         return;
                     }
                 }
+
+                for(let i = 0; i < this.fileInputs.length ; i++){
+                  if(this.fileInputs[i] === 0){
+                      swal({
+                      type: 'error',
+                       title: 'Oops...',
+                       text: 'Не все поля ввода языка заполнены.',
+                       });
+                      return;
+                  }
+                }
                 api.sendTranslate(this.mainTranslateObj);
             },
             setLang(e,index){
                 this.mainTranslateObj["files"][index]["language"] = e.target.value;
+                this.fileInputs[index] = 1;
             },
             removeField(){
                 this.mainTranslateObj["files"][this.fileInputs.length -1 ] = null;

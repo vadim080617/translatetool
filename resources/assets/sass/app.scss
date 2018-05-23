@@ -15,9 +15,9 @@
 
 .loadFieldTitle {
   font-size: 28px;
-  font-weight: bold;
   color: black;
-
+  border-bottom: 1px solid #d6d6d6;
+  margin: 5px;
 }
 
 .div-with-buttons{
@@ -31,13 +31,4 @@
   padding: 7px;
   display: inline-block;
   height:150px;
-  border: 1px solid #d6d6d6;
-  border-radius: 16px;
-}
-
-.main-field{
-  border: 1px solid #d6d6d6;
-  border-radius: 12px;
-  padding: 5px;
-  margin: 5px;
 }
