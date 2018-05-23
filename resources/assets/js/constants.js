@@ -1,1 +1,1 @@
-export const API_URL = 'http://myapp.test';
+export const API_URL = 'http://translate.tool';

@@ -151,7 +151,7 @@
                     ext = parts.pop(),
                     filename = parts.pop();
 
-                fileReader.readAsBinaryString(e.target.files[0]);
+                fileReader.readAsText(e.target.files[0],'UTF-8');
                 fileReader.addEventListener('load', ()=>{
                    text = fileReader.result;
                    this.handlerTranslate(text,ext,filename,index);
