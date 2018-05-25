@@ -28532,7 +28532,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                             if (i === 0) {
                                 table[_sheet][_cell] = {};
                             }
-                            table[_sheet][_cell][keys[i]] = sheetObjects[_sheet][i][_cell];
+                            var val = sheetObjects[_sheet][i][_cell];
+                            val = val.replace(/\\/g, "\\\\");
+                            val = val.replace(/'/g, "\\'");
+                            table[_sheet][_cell][keys[i]] = val;
                         }
                     }
                 }
@@ -28679,7 +28682,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                         pair = rows[i].split('>');
                         for (var j = 0; j < pair.length; j++) {
                             pair[j] = pair[j].replace(/(^')|(',$)|('$)/g, "");
+                            pair[j] = pair[j].replace(/(^")|(",$)|("$)/g, "");
                         }
+                        pair[1] = pair[1].replace(/\\'/g, "'");
+                        pair[1] = pair[1].replace(/\\\\/g, "\\");
                         obj[pair[0]] = pair[1];
                     } else {
                         subkeys = true;
@@ -28702,6 +28708,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                             for (var _j = 0; _j < pair.length; _j++) {
                                 pair[_j] = pair[_j].replace(/(^')|(',$)|('$)/g, "");
                             }
+                            pair[1] = pair[1].replace(/\\'/g, "'");
+                            pair[1] = pair[1].replace(/\\\\/g, "\\");
                             obj[prefix + '->>' + pair[0]] = pair[1];
                         }
                     }
@@ -28715,6 +28723,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 for (var _i2 = 0; _i2 < rows.length; _i2++) {
                     _pair = rows[_i2].split('>');
                     _pair[1] = _pair[1].replace(/(^')|(',$)|('$)/g, "");
+                    _pair[1] = _pair[1].replace(/\\'/g, "'");
+                    _pair[1] = _pair[1].replace(/\\\\/g, "\\");
                     _obj[_pair[0]] = _pair[1];
                 }
 

@@ -122,7 +122,10 @@
                                 if (i === 0) {
                                     table[sheet][cell] = {};
                                 }
-                                table[sheet][cell][keys[i]] = sheetObjects[sheet][i][cell];
+                                let val = sheetObjects[sheet][i][cell];
+                                val = val.replace(/\\/g,"\\\\");
+                                val = val.replace(/'/g,"\\'");
+                                table[sheet][cell][keys[i]] = val;
                             }
                         }
                     }
@@ -238,7 +241,10 @@
                             pair = rows[i].split('>');
                             for (let j = 0; j < pair.length; j++) {
                                 pair[j] = pair[j].replace(/(^')|(',$)|('$)/g, "");
+                                pair[j] = pair[j].replace(/(^")|(",$)|("$)/g, "");
                             }
+                            pair[1] = pair[1].replace(/\\'/g,"'");
+                            pair[1] = pair[1].replace(/\\\\/g,"\\");
                             obj[pair[0]] = pair[1];
                         } else {
                             subkeys = true;
@@ -261,6 +267,8 @@
                                 for (let j = 0; j < pair.length; j++) {
                                     pair[j] = pair[j].replace(/(^')|(',$)|('$)/g, "");
                                 }
+                                pair[1] = pair[1].replace(/\\'/g,"'");
+                                pair[1] = pair[1].replace(/\\\\/g,"\\");
                                 obj[prefix + '->>' + pair[0]] = pair[1];
                             }
                         }
@@ -275,6 +283,8 @@
                     for (let i = 0; i < rows.length; i++) {
                         pair = rows[i].split('>');
                         pair[1] = pair[1].replace(/(^')|(',$)|('$)/g, "");
+                        pair[1] = pair[1].replace(/\\'/g,"'");
+                        pair[1] = pair[1].replace(/\\\\/g,"\\");
                         obj[pair[0]] = pair[1];
                     }
 
