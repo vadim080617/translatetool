@@ -28428,6 +28428,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
 
 
 
@@ -28441,9 +28444,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             mainTranslateObj: {},
             fileInputs: []
         };
-    },
-    mounted: function mounted() {
-        console.log('Component mounted.');
     },
     created: function created() {
         this.fileInputs[0] = -1;
@@ -28512,7 +28512,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 sheetObjects[sheet] = __WEBPACK_IMPORTED_MODULE_2_xlsx___default.a.utils.sheet_to_json(excelSheets[sheet]);
             }
 
-            console.log(sheetObjects);
+            //console.log(sheetObjects);
 
             for (var _sheet in sheetObjects) {
                 table[_sheet] = {};
@@ -28587,28 +28587,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
-                                // sending key/value object
-                                console.log(ext);
-                                console.log(filename);
-
-                                _context2.next = 4;
+                                _context2.next = 2;
                                 return this.transformToRows(text, ext);
 
-                            case 4:
+                            case 2:
                                 rows = _context2.sent;
-                                _context2.next = 7;
+                                _context2.next = 5;
                                 return this.makeKeyValueObject(rows, ext);
 
-                            case 7:
+                            case 5:
                                 obj = _context2.sent;
 
 
                                 this.mainTranslateObj["files"][index] = {};
                                 this.mainTranslateObj["files"][index]["filename"] = filename;
                                 this.mainTranslateObj["files"][index]["lang"] = obj;
-                                this.$set(this.fileInputs, index, 0);
+                                if (this.fileInputs[index] === -1) {
+                                    this.$set(this.fileInputs, index, 0);
+                                } else if (this.fileInputs[index] === 1) {
+                                    console.log(document.getElementById("langfield" + index));
+                                    this.mainTranslateObj["files"][index]["language"] = document.getElementById("langfield" + index).value;
+                                }
 
-                            case 12:
+                            case 10:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -28735,7 +28736,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.fileInputs.push(-1);
         },
         sendTranslates: function sendTranslates() {
-            console.log(this.fileInputs);
+            //console.log(this.fileInputs);
             for (var i = 0; i < this.fileInputs.length; i++) {
                 if (this.fileInputs[i] === -1) {
                     __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default()({
@@ -28767,6 +28768,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.mainTranslateObj["files"][this.fileInputs.length - 1] = null;
             delete this.mainTranslateObj["files"][this.fileInputs.length - 1];
             this.fileInputs.pop();
+        },
+        clearInput: function clearInput() {
+            var excelInput = document.getElementById("excelf");
+            excelInput.value = null;
+            excelInput.nextElementSibling.textContent = "Choose file";
         }
     }
 });
@@ -63347,7 +63353,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body row" }, [
-            _c("div", { staticClass: "col-6" }, [
+            _c("div", { staticClass: "col-6 take-excel-field" }, [
               _c(
                 "div",
                 { staticClass: "loadFieldTitle row justify-content-center" },
@@ -63428,6 +63434,18 @@ var render = function() {
                     }),
                     _vm._v(" PHP")
                   ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "div-with-buttons" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn",
+                      attrs: { type: "button" },
+                      on: { click: _vm.clearInput }
+                    },
+                    [_vm._v("Clear")]
+                  )
                 ])
               ])
             ]),
@@ -63469,20 +63487,31 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("label", { staticClass: "col-12 p-0" }, [
-                          _vm._v(
-                            "Enter language:\n                                "
-                          ),
-                          _c("input", {
-                            staticClass: "form-control col-12",
-                            attrs: { type: "text", disabled: value === -1 },
-                            on: {
-                              change: function($event) {
-                                _vm.setLang($event, index)
+                        _c(
+                          "label",
+                          {
+                            staticClass: "col-12 p-0",
+                            attrs: { for: "`langfield${index}`" }
+                          },
+                          [
+                            _vm._v(
+                              "Enter language:\n                                "
+                            ),
+                            _c("input", {
+                              staticClass: "form-control col-12",
+                              attrs: {
+                                type: "text",
+                                id: "langfield" + index,
+                                disabled: value === -1
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.setLang($event, index)
+                                }
                               }
-                            }
-                          })
-                        ])
+                            })
+                          ]
+                        )
                       ]
                     )
                   ]

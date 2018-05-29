@@ -6,17 +6,20 @@
                     <div class="card-header main-app-header">Translate tool</div>
 
                     <div class="card-body row">
-                            <div class="col-6">
+                            <div class="col-6 take-excel-field">
                                 <div class="loadFieldTitle row justify-content-center">Excel -> js||php</div>
                                 <div>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="excelf"  @change="getTextFromExcel($event)">
+                                        <input type="file" class="custom-file-input" id="excelf" @change="getTextFromExcel($event)">
                                         <label class="custom-file-label" for="excelf">Choose file</label>
                                     </div>
                                     <div>
                                         <div>Type of output</div>
                                         <label><input type="radio" v-model="typeOfOutput" name="typeOfOutput" value="js"> JS</label>
                                         <label><input type="radio" v-model="typeOfOutput" name="typeOfOutput" value="php"> PHP</label>
+                                    </div>
+                                    <div class="div-with-buttons">
+                                        <button class="btn" type="button" @click="clearInput">Clear</button>
                                     </div>
                                 </div>
                             </div>
@@ -28,8 +31,8 @@
                                         <input type="file" class="custom-file-input" id="transf" @change="getTextFromFile($event,index)">
                                         <label class="custom-file-label" for="transf">Choose file</label>
                                     </div>
-                                    <label class = "col-12 p-0">Enter language:
-                                    <input class="form-control col-12" type="text" @change="setLang($event,index)" :disabled="value === -1">
+                                    <label class = "col-12 p-0" for="`langfield${index}`">Enter language:
+                                    <input class="form-control col-12" type="text" :id="`langfield${index}`" @change="setLang($event,index)" :disabled="value === -1">
                                     </label>
                                 </div>
                             </template>
@@ -59,9 +62,6 @@
                 mainTranslateObj:{},
                 fileInputs: [],
             }
-        },
-        mounted() {
-            console.log('Component mounted.')
         },
         created() {
             this.fileInputs[0] = -1;
@@ -102,7 +102,7 @@
                     sheetObjects[sheet] = XLSX.utils.sheet_to_json(excelSheets[sheet]);
                 }
 
-                console.log(sheetObjects);
+                //console.log(sheetObjects);
 
                 for(let sheet in sheetObjects){
                     table[sheet] = {};
@@ -170,8 +170,8 @@
                 });
             },
             async handlerTranslate(text,ext,filename,index){                // sending key/value object
-                console.log(ext);
-                console.log(filename);
+                //console.log(ext);
+                //console.log(filename);
 
                 let rows = await this.transformToRows(text,ext);
 
@@ -181,7 +181,12 @@
                 this.mainTranslateObj["files"][index] = {};
                 this.mainTranslateObj["files"][index]["filename"] = filename;
                 this.mainTranslateObj["files"][index]["lang"] = obj;
-                this.$set(this.fileInputs, index, 0);
+                if (this.fileInputs[index] === -1) {
+                    this.$set(this.fileInputs, index, 0);
+                }else if(this.fileInputs[index] === 1){
+                    console.log(document.getElementById("langfield" + index));
+                    this.mainTranslateObj["files"][index]["language"] = document.getElementById("langfield" + index).value;
+                }
             },
             transformToRows(text,ext){                      //transform text from file into rows
                 if(ext === "php"){
@@ -295,7 +300,7 @@
                 this.fileInputs.push(-1);
             },
             sendTranslates(){
-                console.log(this.fileInputs);
+                //console.log(this.fileInputs);
                 for(let i = 0; i < this.fileInputs.length ; i++){
                     if(this.fileInputs[i] === -1){
                         swal({
@@ -327,6 +332,11 @@
                 this.mainTranslateObj["files"][this.fileInputs.length -1 ] = null;
                 delete this.mainTranslateObj["files"][this.fileInputs.length -1] ;
                 this.fileInputs.pop();
+            },
+            clearInput(){
+                const excelInput = document.getElementById("excelf");
+                excelInput.value = null;
+                excelInput.nextElementSibling.textContent = "Choose file";
             },
         },
     }
